@@ -1,0 +1,18 @@
+@SerilogSeqDemo_HostAddress = https://localhost:44309
+
+GET {{SerilogSeqDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+{{SerilogSeqDemo_HostAddress}}/api/log/info
+
+
+###
+{{SerilogSeqDemo_HostAddress}}/api/log/warning
+
+
+###
+{{SerilogSeqDemo_HostAddress}}/api/log/error
+
+###
+{{SerilogSeqDemo_HostAddress}}/api/log/enrichederror
