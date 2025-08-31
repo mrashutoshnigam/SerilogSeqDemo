@@ -1,4 +1,5 @@
 using Serilog;
+using Serilog.Events;
 namespace SerilogSeqDemo
 {
     public class Program
@@ -8,15 +9,21 @@ namespace SerilogSeqDemo
             var builder = WebApplication.CreateBuilder(args);
 
             // Logger Configuration
-            Log.Logger = new LoggerConfiguration()
+            var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.Console()
-                .WriteTo.Seq("http://localhost:5341") // Ensure Seq is running at this URL
                 .Enrich.FromLogContext()
+                .Enrich.WithEnvironmentName()
                 .Enrich.WithMachineName()
                 .Enrich.WithThreadId()
-                .CreateLogger();
-            
+                .WriteTo.Console();
+
+            // Use Seq only in DEBUG mode
+#if DEBUG
+            loggerConfiguration.WriteTo.Seq("http://localhost:5341");
+#endif
+
+            Log.Logger = loggerConfiguration.CreateLogger();
+
             builder.Host.UseSerilog(); // Use Serilog for logging
             // Add services to the container.
 
